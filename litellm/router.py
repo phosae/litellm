@@ -64,6 +64,7 @@ from litellm.router_strategy.lowest_latency import LowestLatencyLoggingHandler
 from litellm.router_strategy.lowest_tpm_rpm import LowestTPMLoggingHandler
 from litellm.router_strategy.lowest_tpm_rpm_v2 import LowestTPMLoggingHandler_v2
 from litellm.router_strategy.simple_shuffle import simple_shuffle
+from litellm.router_strategy.highest_weight import highest_weight
 from litellm.router_strategy.tag_based_routing import get_deployments_for_tag
 from litellm.router_utils.add_retry_fallback_headers import (
     add_fallback_headers_to_response,
@@ -248,6 +249,7 @@ class Router:
             "latency-based-routing",
             "cost-based-routing",
             "usage-based-routing-v2",
+            "highest-weight",
         ] = "simple-shuffle",
         optional_pre_call_checks: Optional[OptionalPreCallChecks] = None,
         routing_strategy_args: dict = {},  # just for latency-based
@@ -285,7 +287,7 @@ class Router:
             retry_after (int): Minimum time to wait before retrying a failed request. Defaults to 0.
             allowed_fails (Optional[int]): Number of allowed fails before adding to cooldown. Defaults to None.
             cooldown_time (float): Time to cooldown a deployment after failure in seconds. Defaults to 1.
-            routing_strategy (Literal["simple-shuffle", "least-busy", "usage-based-routing", "latency-based-routing", "cost-based-routing"]): Routing strategy. Defaults to "simple-shuffle".
+            routing_strategy (Literal["simple-shuffle", "least-busy", "usage-based-routing", "latency-based-routing", "cost-based-routing", "highest-weight"]): Routing strategy. Defaults to "simple-shuffle".
             routing_strategy_args (dict): Additional args for latency-based routing. Defaults to {}.
             alerting_config (AlertingConfig): Slack alerting configuration. Defaults to None.
             provider_budget_config (ProviderBudgetConfig): Provider budget configuration. Use this to set llm_provider budget limits. example $100/day to OpenAI, $100/day to Azure, etc. Defaults to None.
@@ -6417,6 +6419,12 @@ class Router:
                     healthy_deployments=healthy_deployments,
                     model=model,
                 )
+            elif self.routing_strategy == "highest-weight":
+                return highest_weight(
+                    llm_router_instance=self,
+                    healthy_deployments=healthy_deployments,
+                    model=model,
+                )
             elif (
                 self.routing_strategy == "least-busy"
                 and self.leastbusy_logger is not None
@@ -6539,6 +6547,12 @@ class Router:
             # if users pass rpm or tpm, we do a random weighted pick - based on rpm/tpm
             ############## Check 'weight' param set for weighted pick #################
             return simple_shuffle(
+                llm_router_instance=self,
+                healthy_deployments=healthy_deployments,
+                model=model,
+            )
+        elif self.routing_strategy == "highest-weight":
+            return highest_weight(
                 llm_router_instance=self,
                 healthy_deployments=healthy_deployments,
                 model=model,

@@ -501,6 +501,9 @@ const GeneralSettings: React.FC<GeneralSettingsPageProps> = ({
                                 <SelectItem value="simple-shuffle">
                                   simple-shuffle
                                 </SelectItem>
+                                <SelectItem value="highest-weight">
+                                  highest-weight
+                                </SelectItem>
                               </Select2>
                             ) : (
                               <TextInput

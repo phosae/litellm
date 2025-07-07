@@ -48,5 +48,7 @@
 	// "remoteUser": "litellm",
 
 	// Use 'postCreateCommand' to run commands after the container is created.
-	"postCreateCommand": "pipx install poetry && poetry install -E extra_proxy -E proxy"
+	"postCreateCommand": "pipx install poetry && poetry install -E extra_proxy -E proxy",
+
+	"mounts": ["source=/var/run/docker.sock,target=/var/run/docker.sock,type=bind"]
 }

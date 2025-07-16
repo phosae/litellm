@@ -1,0 +1,122 @@
+{
+    "version": "0.2.0",
+    "configurations": [
+        {
+            "name": "Debug LiteLLM Proxy (admin.yaml)",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/litellm",
+            "args": [
+                "--config",
+                "zenx/admin.yaml",
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "TZ": "Asia/Shanghai",
+                "PYTHONPATH": "${workspaceFolder}",
+                "STORE_MODEL_IN_DB": "True",
+                "LITELLM_LOG": "DEBUG"
+            },
+            "justMyCode": false,
+            "stopOnEntry": false
+        },
+        {
+            "name": "Debug LiteLLM Module (admin.yaml)",
+            "type": "python",
+            "request": "launch",
+            "module": "litellm.proxy.proxy_cli",
+            "args": [
+                "--config",
+                "zenx/admin.yaml",
+                "--debug",
+                "--detailed_debug"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "TZ": "Asia/Shanghai",
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": false,
+            "stopOnEntry": false
+        },
+        {
+            "name": "Debug LiteLLM Proxy (admin.yaml) - Local",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/litellm",
+            "args": [
+                "--config",
+                "zenx/admin.yaml",
+                "--debug",
+                "--detailed_debug",
+                "--local"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "TZ": "Asia/Shanghai",
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": false,
+            "stopOnEntry": false
+        },
+        {
+            "name": "Debug LiteLLM Proxy (admin.yaml) - Skip Server",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/litellm",
+            "args": [
+                "--config",
+                "zenx/admin.yaml",
+                "--debug",
+                "--detailed_debug",
+                "--skip_server_startup"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "TZ": "Asia/Shanghai",
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": false,
+            "stopOnEntry": false
+        },
+        {
+            "name": "Debug LiteLLM Proxy (admin.yaml) - Health Check",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/.venv/bin/litellm",
+            "args": [
+                "--config",
+                "zenx/admin.yaml",
+                "--debug",
+                "--detailed_debug",
+                "--health"
+            ],
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "TZ": "Asia/Shanghai",
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": false,
+            "stopOnEntry": false
+        },
+        {
+            "name": "Debug LiteLLM Components",
+            "type": "python",
+            "request": "launch",
+            "program": "${workspaceFolder}/zenx/debug_litellm.py",
+            "console": "integratedTerminal",
+            "cwd": "${workspaceFolder}",
+            "env": {
+                "TZ": "Asia/Shanghai",
+                "PYTHONPATH": "${workspaceFolder}"
+            },
+            "justMyCode": false,
+            "stopOnEntry": false
+        }
+    ]
+} 

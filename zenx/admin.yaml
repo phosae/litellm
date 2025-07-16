@@ -1,0 +1,54 @@
+model_list:
+- model_name: local
+  litellm_params:
+      model: openai/429
+      api_base: 'http://host.orb.internal:8885/v1'
+      api_key: 'empty'
+      weight: 200
+- model_name: local
+  litellm_params:
+      model: openai/503
+      api_base: 'http://host.orb.internal:8886/v1'
+      api_key: 'empty'
+      weight: 99
+- model_name: local
+  litellm_params:
+      model: openai/400
+      api_base: 'http://host.orb.internal:8887/v1'
+      api_key: 'empty'
+      weight: 98
+- model_name: local
+  litellm_params:
+      model: openai/200
+      api_base: 'http://host.orb.internal:8888/v1'
+      api_key: 'empty'
+      weight: 2
+
+- model_name: always_right
+  litellm_params:
+      model: openai/200
+      api_base: 'http://host.orb.internal:8888/v1'
+      api_key: 'empty'
+      weight: 1
+
+general_settings: 
+  master_key: sk-1234 
+  database_url: postgresql://postgres:root@host.orb.internal:5432/litellm
+  # database_url: postgresql://postgres:root@127.0.0.1:5432/litellm
+
+# https://docs.litellm.ai/docs/proxy/config_settings#router_settings---reference
+router_settings: 
+  routing_strategy: highest-weight
+  fallbacks: [{"local": ["always_right"]}]
+  allowed_fails: 0 
+  cooldown_time: 60
+  num_retries: 4
+  timeout: 30   
+  allowed_fails_policy:
+    BadRequestErrorAllowedFails: 1
+  # redis_host: <your redis host>
+  # redis_password: <your redis password>
+  # redis_port: 1992
+
+litellm_settings:
+  callbacks: custom_callbacks.proxy_handler_instance
